@@ -43,8 +43,8 @@ public class ReservePage extends PageObject {
     //======================================================================================
     public static final By START_OF_TRIP_DATE = By.xpath("//div[@class='_1yy0mt98'] | //div[@class='_ykxqsm']");
 
-    public static final By GESTS_LABEL = By.cssSelector("div#GuestPicker-book_it-trigger span");
-    public static final By NUMBER_ADULTS_DISPAYED = By.cssSelector("div[aria-labelledby*=adults] *:not(svg)[aria-hidden=true]");
+    public static final By GUESTS_LABEL = By.cssSelector("div#GuestPicker-book_it-trigger span");
+    public static final By NUMBER_ADULTS_DISPLAYED = By.cssSelector("div[aria-labelledby*=adults] *:not(svg)[aria-hidden=true]");
     public static final By NUMBER_CHILDREN_DISPLAYED = By.cssSelector("div[aria-labelledby*=children] *:not(svg)[aria-hidden=true]");
 
 }

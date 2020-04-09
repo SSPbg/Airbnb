@@ -21,7 +21,7 @@ import java.util.Locale;
 
 import static com.airbnb.serenity.page_objects.HomePage.*;
 import static com.airbnb.serenity.page_objects.MenuWithFilters.ROOMS_AND_BEDS_MENU_ITEM;
-import static com.airbnb.serenity.page_objects.StaysPage.STAR_WITH_VALUE;
+import static com.airbnb.serenity.page_objects.StaysPage.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 
@@ -38,8 +38,8 @@ public class BookingActions
 
     public void startSearchingWithPlace(String place) {
         //options.getPlace();
-        currentPage.waitForRenderedElements(LABEL_FOR_CITY);
-        clicksOn(LABEL_FOR_CITY);
+        currentPage.waitForRenderedElements(SEARCH_FOR_CITY);
+
         System.out.println(HomePage.SEARCH_FOR_CITY);
 
         fillsFieldWithData(HomePage.SEARCH_FOR_CITY, place);
@@ -144,19 +144,19 @@ public class BookingActions
         clicksOn(menuWithFilters.showMoreThanThreeThousandPlacesButton);
 
     }
-
+/*
     public By returnStarsByStayNumberInPage(int number) {
         int nthElement = number + 1;
         By StarsBy = By.cssSelector("." + StaysPage.CLASS_OF_STAY + ":nth-of-type(" + String.valueOf(nthElement) + ") " + StaysPage.STARS_CSS);
         return StarsBy;
     }
-
+*/
     public By returnLinkOFStayByStayNumberInPage(int number) {
         int nthElement = number + 1;
         By linkBy = By.cssSelector("." + StaysPage.CLASS_OF_STAY + ":nth-of-type(" + String.valueOf(nthElement) + ") a");
         return linkBy;
     }
-
+/*
     public By returnStayByStayNumberInPage(int number) {
         int nthElement = number + 1;
         By linkBy = By.cssSelector("." + StaysPage.CLASS_OF_STAY + ":nth-of-type(" + String.valueOf(nthElement) + ")");
@@ -168,7 +168,7 @@ public class BookingActions
         By starsBy = By.xpath(byLocatorString);
         return starsBy;
     }
-
+*/
     @Step("The Stay with {0} Stars or above not found with this search criteria")
     public void elementNotFound(float stars) {
         System.out.println("The element with stars >= " + String.valueOf(stars) + " not found");
@@ -184,35 +184,29 @@ public class BookingActions
             i = 0;
 
             List<WebElementFacade> Stays = new ArrayList();
-            for (int n = 0; n < 10
-                    ; n++) {
-                try {
-                    Stays = staysPage.listOfStays;
+            Stays = staysPage.listOfStays;
 
-                } catch (Exception e) {
-                    System.out.println(e.getMessage());
-                }
-            }
+
             while (i < Stays.size()) {
-                // setElementInVisibleScreen(Stay);
+                setElementInVisibleScreen(Stays.get(0));
                 WebElementFacade star1 = null;
                 String startText = "1";
-                for (int n = 0; n < 3; n++) {
+              //  for (int n = 0; n < 3; n++) {
                     try {
-                        star1 = (WebElementFacade) Stays.get(i).findBy(By.xpath(".//span[@class='_3zgr580']"));
+                        star1 = (WebElementFacade) Stays.get(i).findBy(By.xpath(STARS_XPATH));///By.xpath(".//span[@class='_3zgr580']"));
                         startText = star1.getText();
                         //List<WebElementFacade> starsList = getAllWebElementFacadeABy(returnStarsByStayNumberInPage(i));
                     } catch (Exception e) {
-
+                        System.out.println("Stay with number "+i+" has not a star");
                     }
-                }
+               // }
                 if (star1 != null) {
                     //WebElementFacade star = starsList.get(0);
 
                     float starValue = Float.parseFloat(startText);
                     System.out.println("Star value " + starValue);
                     if (starValue >= stars) {
-                        WebElementFacade link = getWebElementFacadeBy(returnLinkOFStayByStayNumberInPage(i));
+                        WebElementFacade link = Stays.get(i);//getWebElementFacadeBy(returnLinkOFStayByStayNumberInPage(i));
                         System.out.println(link.getAttribute("href"));
                         goToURL(link.getAttribute("href"));
                         return;

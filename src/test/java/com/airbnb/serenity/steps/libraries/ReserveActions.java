@@ -3,6 +3,7 @@ package com.airbnb.serenity.steps.libraries;
 import com.airbnb.serenity.entities.BookingOptions;
 import com.airbnb.serenity.page_objects.ReservePage;
 import net.serenitybdd.core.pages.WebElementFacade;
+import net.thucydides.core.annotations.Step;
 import org.assertj.core.api.SoftAssertions;
 
 import java.time.LocalDate;
@@ -11,7 +12,8 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static com.airbnb.serenity.page_objects.ReservePage.GESTS_LABEL;
+
+import static com.airbnb.serenity.page_objects.ReservePage.GUESTS_LABEL;
 
 public class ReserveActions
         extends BaseActions {
@@ -22,6 +24,7 @@ public class ReserveActions
         return String.format("%.0f", bookingOptions.getPrice() * bookingOptions.getNights());
     }
 
+    @Step("Assert the dates")
     public void checkDates(BookingOptions options){
         List<WebElementFacade> tripDates =  getAllWebElementFacadeABy(ReservePage.START_OF_TRIP_DATE);
         String startOfTripDate=tripDates.get(0).getText();
@@ -45,20 +48,34 @@ public class ReserveActions
 
     }
 
+    @Step("Assert the number of guests")
     public void checkGuests(BookingOptions options){
-       currentPage.waitForRenderedElements(GESTS_LABEL);
-        System.out.println("Overall guests: "+getWebElementFacadeBy(GESTS_LABEL).getText());
+       currentPage.waitForRenderedElements(GUESTS_LABEL);
+        System.out.println("Overall guests: "+getWebElementFacadeBy(GUESTS_LABEL).getText());
+        int overallGuests = 0;
         Pattern p = Pattern.compile("\\d+");
-        Matcher m = p.matcher(getWebElementFacadeBy(GESTS_LABEL).getText());
-        while(m.find()) {
+        Matcher m = p.matcher(getWebElementFacadeBy(GUESTS_LABEL).getText());
+        if (m.find()) {
             System.out.println(m.group());
+            overallGuests =Integer.parseInt(m.group());
         }
 
-        clicksOn(GESTS_LABEL);
-        String adultsDisplayed = getWebElementFacadeBy(ReservePage.NUMBER_ADULTS_DISPAYED).getText();
-        String kidsDisplayed = getWebElementFacadeBy(ReservePage.NUMBER_CHILDREN_DISPLAYED).getText();
+        clicksOn(GUESTS_LABEL);
+        String adultsDisplayed = readsTextFrom(getWebElementFacadeBy(ReservePage.NUMBER_ADULTS_DISPLAYED));
+        String kidsDisplayed =readsTextFrom(getWebElementFacadeBy(ReservePage.NUMBER_CHILDREN_DISPLAYED));
         System.out.println("Adults "+adultsDisplayed+" Kids: "+kidsDisplayed);
-        clicksOn(GESTS_LABEL);
+         int overallGuestsExpetcted =options.getAdults()+options.getKids();
+
+        SoftAssertions softly = new SoftAssertions();
+        softly.assertThat( overallGuests)
+                .as("Number of all guests has to be as expected:")
+                .isEqualTo(overallGuestsExpetcted);
+        softly.assertThat(Integer.parseInt(adultsDisplayed))
+                .as("Number of all adults has to be as expected:")
+                .isEqualTo(options.getAdults());
+        softly.assertAll();
+
+        clicksOn(GUESTS_LABEL);
 
     }
 
