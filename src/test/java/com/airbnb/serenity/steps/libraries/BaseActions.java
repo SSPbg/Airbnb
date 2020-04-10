@@ -174,6 +174,13 @@ public class BaseActions {
         act.moveToElement(element).build().perform();
     }
 
+    public void moveToElementAndClicksOnXY(WebElementFacade element,Integer xOffset,Integer yOffset) {
+
+        Actions act = new Actions(currentPage.getDriver());
+        act.moveToElement(element,xOffset,yOffset).click().build().perform();
+
+    }
+
     public void setElementInVisibleScreen(WebElementFacade element) {
         Actions act = new Actions(currentPage.getDriver());
         act.moveToElement(element).build().perform();

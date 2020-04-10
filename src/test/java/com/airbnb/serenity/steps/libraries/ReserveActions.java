@@ -5,24 +5,29 @@ import com.airbnb.serenity.page_objects.ReservePage;
 import net.serenitybdd.core.pages.WebElementFacade;
 import net.thucydides.core.annotations.Step;
 import org.assertj.core.api.SoftAssertions;
+import org.openqa.selenium.By;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
+
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.text.NumberFormat;
+import java.text.ParseException;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 
 import static com.airbnb.serenity.page_objects.ReservePage.GUESTS_LABEL;
+import static com.airbnb.serenity.page_objects.ReservePage.GUESTS_LABEL_2;
 
 public class ReserveActions
         extends BaseActions {
 
-    private ReservePage reservePage;
-
-    public String calculateDaysAndNights(BookingOptions bookingOptions) {
-        return String.format("%.0f", bookingOptions.getPrice() * bookingOptions.getNights());
-    }
 
     @Step("Assert the dates")
     public void checkDates(BookingOptions options){
@@ -50,11 +55,27 @@ public class ReserveActions
 
     @Step("Assert the number of guests")
     public void checkGuests(BookingOptions options){
-       currentPage.waitForRenderedElements(GUESTS_LABEL);
-        System.out.println("Overall guests: "+getWebElementFacadeBy(GUESTS_LABEL).getText());
+        WebDriverWait wait = new WebDriverWait(currentPage.getDriver(), 5000);
+        WebElementFacade guestLabel = null;
+        try {
+             guestLabel = getWebElementFacadeBy(GUESTS_LABEL);
+        }
+        catch ( Exception e) {
+           // WebElementFacade div = currentPage.find(By.cssSelector("div[data-plugin-in-point-id=BOOK_IT_SIDEBAR]"));
+           // setElementInVisibleScreen(div);
+           // moveToElementAndClicksOnXY(div,0,60);
+            guestLabel = getWebElementFacadeBy(ReservePage.GUESTS_LABEL_3);
+
+
+        }
+     //   setElementInVisibleScreen(guestLabel);
+     //   wait.until(ExpectedConditions.visibilityOf(guestLabel));
+
+        System.out.println("Overall guests: "+guestLabel.getText());
+
         int overallGuests = 0;
         Pattern p = Pattern.compile("\\d+");
-        Matcher m = p.matcher(getWebElementFacadeBy(GUESTS_LABEL).getText());
+        Matcher m = p.matcher(readsTextFrom(guestLabel));
         if (m.find()) {
             System.out.println(m.group());
             overallGuests =Integer.parseInt(m.group());
@@ -79,12 +100,26 @@ public class ReserveActions
 
     }
 
-    public void open(){
-        reservePage.open();
+    @Step
+    public void checkPrice() {
+
+        currentPage.waitForRenderedElementsToBePresent(By.xpath("//div[@class='_80f7zz']//span[@class='_pgfqnw'] | //div[@class='_n4om66']//span[@class='_doc79r']"));
+        String priceDisplayed = readsTextFrom(By.xpath("//div[@class='_80f7zz']//span[@class='_pgfqnw'] | //div[@class='_n4om66']//span[@class='_doc79r']"));
+
+        NumberFormat numberFormat = new DecimalFormat("¤#.00", new DecimalFormatSymbols(Locale.GERMANY));
+
+        // NumberFormat number = NumberFormat.getCurrencyInstance(Locale.GERMANY);
+        System.out.println("Currency Symbol " + numberFormat.getCurrency().getSymbol());
+        System.out.println("Currency Display Name " + numberFormat.getCurrency().getDisplayName());
+        Number num = 0;
+        try {
+            num = numberFormat.parse(priceDisplayed);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Can't convert " + priceDisplayed + " to Double!");
+        }
+        System.out.println(num);
     }
 
-/*    @Step
-    public void opensReservePage() {
-        reservePage.open();
-    }*/
+
 }

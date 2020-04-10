@@ -27,7 +27,8 @@ public class HomePage
     //public static final By WHERE_SEARCH = By.id("Koan-magic-carpet-koan-search-bar__input");
     public static final By LABEL_FOR_CITY = By.cssSelector("label[for=bigsearch-query-attached-query]");
 
-    public static final By SEARCH_FOR_CITY = By.cssSelector("input[name=query]");
+    public static final By SEARCH_FOR_CITY = By.cssSelector("input[name=query][aria-autocomplete=list]");
+    public static final By DIALOG = By.cssSelector("div[role=dialog]");
     public static final By FROM_DATE_INPUT = By.id("checkin_input");
     public static final By TO_DATE_INPUT = By.id("checkout_input");
 

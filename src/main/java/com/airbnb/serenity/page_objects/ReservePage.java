@@ -6,7 +6,6 @@ import net.serenitybdd.core.pages.WebElementFacade;
 import net.thucydides.core.annotations.DefaultUrl;
 import org.openqa.selenium.By;
 
-@DefaultUrl("https://bg.airbnb.com/rooms/25563767?location=Bli&adults=2&children=1&check_in=2020-04-12&check_out=2020-04-18&source_impression_id=p3_1586373524_A%2Fgzot5WVdJUn49Q")
 public class ReservePage extends PageObject {
 
     @FindBy(css = "div._ymq6as span span._pgfqnw")
@@ -43,7 +42,9 @@ public class ReservePage extends PageObject {
     //======================================================================================
     public static final By START_OF_TRIP_DATE = By.xpath("//div[@class='_1yy0mt98'] | //div[@class='_ykxqsm']");
 
-    public static final By GUESTS_LABEL = By.cssSelector("div#GuestPicker-book_it-trigger span");
+    public static final By GUESTS_LABEL = By.cssSelector("div.guest-label span");
+    public static final By GUESTS_LABEL_2 = By.cssSelector("label span:not([class])");
+    public static final By GUESTS_LABEL_3 =By.xpath("//label//span");
     public static final By NUMBER_ADULTS_DISPLAYED = By.cssSelector("div[aria-labelledby*=adults] *:not(svg)[aria-hidden=true]");
     public static final By NUMBER_CHILDREN_DISPLAYED = By.cssSelector("div[aria-labelledby*=children] *:not(svg)[aria-hidden=true]");
 

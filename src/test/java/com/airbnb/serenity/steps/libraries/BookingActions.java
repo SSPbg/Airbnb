@@ -8,6 +8,8 @@ import net.serenitybdd.core.pages.WebElementFacade;
 import net.thucydides.core.annotations.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
@@ -38,10 +40,10 @@ public class BookingActions
 
     public void startSearchingWithPlace(String place) {
         //options.getPlace();
-        currentPage.waitForRenderedElements(SEARCH_FOR_CITY);
+        WebDriverWait wait = new WebDriverWait(currentPage.getDriver(), 5000); // 5 seconds timeout
+        wait.until(ExpectedConditions.invisibilityOfElementLocated(HomePage.DIALOG));
 
         System.out.println(HomePage.SEARCH_FOR_CITY);
-
         fillsFieldWithData(HomePage.SEARCH_FOR_CITY, place);
 
         this.currentPage.find(HomePage.SEARCH_FOR_CITY).sendKeys(Keys.ENTER);
@@ -150,13 +152,13 @@ public class BookingActions
         By StarsBy = By.cssSelector("." + StaysPage.CLASS_OF_STAY + ":nth-of-type(" + String.valueOf(nthElement) + ") " + StaysPage.STARS_CSS);
         return StarsBy;
     }
-*/
+
     public By returnLinkOFStayByStayNumberInPage(int number) {
         int nthElement = number + 1;
         By linkBy = By.cssSelector("." + StaysPage.CLASS_OF_STAY + ":nth-of-type(" + String.valueOf(nthElement) + ") a");
         return linkBy;
     }
-/*
+
     public By returnStayByStayNumberInPage(int number) {
         int nthElement = number + 1;
         By linkBy = By.cssSelector("." + StaysPage.CLASS_OF_STAY + ":nth-of-type(" + String.valueOf(nthElement) + ")");
@@ -176,33 +178,29 @@ public class BookingActions
 
     @Step
     public void selectTheFirstStayWithAtLeastGivenStar(Float stars) throws InterruptedException {
-
+        WebDriverWait wait = new WebDriverWait(currentPage.getDriver(), 5000); // 5 seconds timeout
+        wait.until(ExpectedConditions.invisibilityOfElementLocated(HomePage.DIALOG));
 
         boolean nextPageExists = true;
         int i = 0;
         while (nextPageExists) {
             i = 0;
 
-            List<WebElementFacade> Stays = new ArrayList();
-            Stays = staysPage.listOfStays;
-
-
+            List<WebElementFacade> Stays = staysPage.listOfStays;
             while (i < Stays.size()) {
-                setElementInVisibleScreen(Stays.get(0));
+              //  setElementInVisibleScreen(Stays.get(0));
                 WebElementFacade star1 = null;
                 String startText = "1";
-              //  for (int n = 0; n < 3; n++) {
+
                     try {
                         star1 = (WebElementFacade) Stays.get(i).findBy(By.xpath(STARS_XPATH));///By.xpath(".//span[@class='_3zgr580']"));
                         startText = star1.getText();
-                        //List<WebElementFacade> starsList = getAllWebElementFacadeABy(returnStarsByStayNumberInPage(i));
+
                     } catch (Exception e) {
                         System.out.println("Stay with number "+i+" has not a star");
                     }
-               // }
-                if (star1 != null) {
-                    //WebElementFacade star = starsList.get(0);
 
+                if (star1 != null) {
                     float starValue = Float.parseFloat(startText);
                     System.out.println("Star value " + starValue);
                     if (starValue >= stars) {
@@ -239,34 +237,5 @@ public class BookingActions
 
     }
 
-    @Step
-    public void checkPrice() {
 
-//        currentPage.waitForRenderedElementsToBePresent(By.cssSelector("div[data-testid='book-it-default'] span[aria-hidden='true']"));
-//        String priceDisplayed = readsTextFrom(By.cssSelector("div[data-testid='book-it-default'] span[aria-hidden='true']"));
-
-//        currentPage.waitForRenderedElementsToBePresent(By.cssSelector("._ymq6as span span:nth-of-type(1)"));
-//        String priceDisplayed = readsTextFrom(By.cssSelector("._ymq6as span span:nth-of-type(1)"));
-
-/*        currentPage.waitForRenderedElementsToBePresent(By.cssSelector("div[data-testid='book-it-default'] span span:nth-of-type(1)"));
-        String priceDisplayed = readsTextFrom(By.cssSelector("div[data-testid='book-it-default'] span span:nth-of-type(1)"));*/
-
-
-        currentPage.waitForRenderedElementsToBePresent(By.xpath("//div[@class='_80f7zz']//span[@class='_pgfqnw'] | //div[@class='_n4om66']//span[@class='_doc79r']"));
-        String priceDisplayed = readsTextFrom(By.xpath("//div[@class='_80f7zz']//span[@class='_pgfqnw'] | //div[@class='_n4om66']//span[@class='_doc79r']"));
-
-        NumberFormat numberFormat = new DecimalFormat("¤#.00", new DecimalFormatSymbols(Locale.GERMANY));
-
-        // NumberFormat number = NumberFormat.getCurrencyInstance(Locale.GERMANY);
-        System.out.println("Currency Symbol " + numberFormat.getCurrency().getSymbol());
-        System.out.println("Currency Display Name " + numberFormat.getCurrency().getDisplayName());
-        Number num = 0;
-        try {
-            num = numberFormat.parse(priceDisplayed);
-        } catch (ParseException e) {
-            e.printStackTrace();
-            throw new RuntimeException("Can't convert " + priceDisplayed + " to Double!");
-        }
-        System.out.println(num);
-    }
 }

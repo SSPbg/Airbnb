@@ -103,31 +103,6 @@ public class BookingStepsDefinitions {
 
     @Then("^(?:.*) should see the correct sum according entered data$")
     public void userShouldSeeTheCorrectSumAccordingEnteredData() {
-      //  SoftAssertions softly = new SoftAssertions();
-
-        dimo.checkPrice();
-//        pricePerNight = reserveActions.readsDoubleFrom(PRICE_NIGHTS);
-//        System.out.println(pricePerNight);
-/*
-        softly.assertThat(anni.readsTextFrom(PRICE_NIGHTS))
-                .as("Price for 1 night")
-                .contains(String.valueOf(pricePerNight));
->>>>>>> f3f8b18c55f10f9a3a314a19b0003b4d736850da
-
-      softly.assertThat(reserveActions.readsTextFrom(ADULTS))
-                .as("Read text from adults")
-                .isEqualTo(this.bookingOptions.getAdults());
-
-        softly.assertThat(reserveActions.readsTextFrom(CHILDREN))
-                .as("Read text from children")
-                .isEqualTo(this.bookingOptions.getKids());
-        softly.assertThat(reserveActions.readsNumericValueFrom(TAXES))
-                .as("Price for taxes")
-                .isEqualTo(this.bookingOptions.getTaxes());
-
-        softly.assertThat(reserveActions.readsNumericValueFrom(TOTAL_PRICE_WITH_TAXES_NIGHTS))
-                .as("Total price with taxes")
-                .isEqualTo(this.bookingOptions.getTotalPrice());
-        softly.assertAll(); */
+        anni.checkPrice();
     }
 }
