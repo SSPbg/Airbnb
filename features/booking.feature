@@ -26,14 +26,9 @@ Feature: Booking
 
     Examples:
       | place | offset days | days stay | adults | kids | currency | min price | max price | bathrooms | additional              | stars |
-     # | Bali  | 7           | 30        | 2      | 1    | EUR      | 50        | 100       | 1         | Air conditioner,Jacuzzi | 5.0   |
       | Bali  | 5           | 7         | 2      | 1    | EUR      | 50        | 100       | 1         | Air conditioner,Jacuzzi | 5     |
       | Bali  | 5           | 7         | 2      | 1    | EUR      | 50        | 100       | 1         | Air conditioner,Jacuzzi | 5     |
       | Bali  | 5           | 7         | 2      | 1    | EUR      | 50        | 100       | 1         | Air conditioner,Jacuzzi | 5     |
-#      | Bali  | 5           | 7         | 2      | 1    | EUR      | 50        | 100       | 1         | Air conditioner,Jacuzzi | 5     |
-#      | Bali  | 5           | 7         | 2      | 1    | EUR      | 50        | 100       | 1         | Air conditioner,Jacuzzi | 5     |
-#      | Bali  | 5           | 7         | 2      | 1    | EUR      | 50        | 100       | 1         | Air conditioner,Jacuzzi | 5     |
-#      | Bali  | 5           | 7         | 2      | 1    | EUR      | 50        | 100       | 1         | Air conditioner,Jacuzzi | 5     |
-#      | Bali  | 5           | 7         | 2      | 1    | EUR      | 50        | 100       | 1         | Air conditioner,Jacuzzi | 5     |
-#      | Bali  | 5           | 7         | 2      | 1    | EUR      | 50        | 100       | 1         | Air conditioner,Jacuzzi | 5     |
-#      | Bali  | 5           | 7         | 2      | 1    | EUR      | 50        | 100       | 1         | Air conditioner,Jacuzzi | 5     |
+      | Bali  | 5           | 7         | 2      | 1    | EUR      | 50        | 100       | 1         | Air conditioner,Jacuzzi | 5     |
+      | Bali  | 5           | 7         | 2      | 1    | EUR      | 50        | 100       | 1         | Air conditioner,Jacuzzi | 5     |
+      | Bali  | 5           | 7         | 2      | 1    | EUR      | 50        | 100       | 1         | Air conditioner,Jacuzzi | 5     |

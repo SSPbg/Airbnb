@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.time.Month;
 
 public class BookingOptions {
+    private String currency;
     private String place;
     LocalDate startDate;
     LocalDate endDate;
@@ -21,6 +22,14 @@ public class BookingOptions {
     private int nights;
     private int taxes;
     private int totalPrice;
+
+    public String getCurrency() {
+        return currency;
+    }
+
+    public void setCurrency(String currency) {
+        this.currency = currency;
+    }
 
 
     public String getPlace() {

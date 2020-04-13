@@ -41,16 +41,18 @@ public class BookingStepsDefinitions {
 
     @Given("^s?he select currency \"([^\"]*)\"$")
     public void heSelectCurrencyEuro(String currency) {
-            dimo.clicksOn(LANGUAGE_AND_CURRENCY_BUTTON);
-          // dimo.clicksOn(LANGUAGE_AND_CURRENCY_BUTTON_2);
-            dimo.clicksOn(CURRENCY_TABLE_LINK);
+        bookingOptions = new BookingOptions();
+        bookingOptions.setCurrency(currency);
+        dimo.clicksOn(LANGUAGE_AND_CURRENCY_BUTTON);
+        // dimo.clicksOn(LANGUAGE_AND_CURRENCY_BUTTON_2);
+        dimo.clicksOn(CURRENCY_TABLE_LINK);
         dimo.setCurrency(currency);
     }
 
 
     @When("^(?:.*) search for a place where to stay in \"([^\"]*)\"$")
     public void heSearchForAPlaceWhereToStayIn(String place) {
-        bookingOptions = new BookingOptions();
+
         bookingOptions.setPlace(place);
 
         dimo.startSearchingWithPlace(bookingOptions.getPlace());
@@ -80,7 +82,7 @@ public class BookingStepsDefinitions {
         prepareBookingOptionsObject(bookingOptions, requirements);
         dimo.setPriceRange(bookingOptions.getMinPrice(), bookingOptions.getMaxPrice());
         dimo.selectRoomsAndBeds(bookingOptions.getBathRooms());
-        dimo.setAdditionalAmenities(bookingOptions.isAirConditioner(),bookingOptions.isJacuzzi());
+        dimo.setAdditionalAmenities(bookingOptions.isAirConditioner(), bookingOptions.isJacuzzi());
 
 
     }
@@ -92,10 +94,10 @@ public class BookingStepsDefinitions {
     }
 
 
-
     @Then("^he should see the reservation details in the widget$")
     public void heShouldSeeTheReservationDetailsInTheWidget() {
         //dimo.checkTheCalendarsDaysWithBlack(bookingOptions);
+
         anni.checkDates(bookingOptions);
         anni.checkGuests(bookingOptions);
     }
@@ -103,6 +105,6 @@ public class BookingStepsDefinitions {
 
     @Then("^(?:.*) should see the correct sum according entered data$")
     public void userShouldSeeTheCorrectSumAccordingEnteredData() {
-        anni.checkPrice();
+        anni.checkPrice(bookingOptions);
     }
 }
