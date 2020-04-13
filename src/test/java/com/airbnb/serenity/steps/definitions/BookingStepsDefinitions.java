@@ -62,6 +62,7 @@ public class BookingStepsDefinitions {
     public void heSearchingForVacationDaysTripAfterDays(Integer howLong, Integer daysFromNow) {
         bookingOptions.setStartDate(daysFromNow);
         bookingOptions.setEndDate(daysFromNow, howLong);
+        bookingOptions.setDays(howLong);
         dimo.applyDate(bookingOptions.getStartDate());
         dimo.applyDate(bookingOptions.getEndDate());
     }

@@ -64,7 +64,6 @@ public class ReservePage extends PageObject {
 
     @FindAll({
             @FindBy(css = "form#book_it_form span span[class=_j1kt73]"),
-            @FindBy(css = "form#book_it_form span span div[aria-hidden=true]"),
             @FindBy(css = "[data-plugin-in-point-id=BOOK_IT_SIDEBAR] li>span:nth-of-type(2)") //_ra05uc+ _l1ngr4-
     })
     public List<WebElementFacade> listPrices;
@@ -75,4 +74,9 @@ public class ReservePage extends PageObject {
             @FindBy (css= "span[class=_1p0spma2] span")
     })
     public List<WebElementFacade> pricePerDay;
+
+    @FindAll({
+            @FindBy(css = "form#book_it_form span span div[aria-hidden=true]")
+    })
+    public List<WebElementFacade> discountPrice;
 }

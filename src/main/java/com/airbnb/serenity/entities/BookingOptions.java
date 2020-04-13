@@ -19,7 +19,7 @@ public class BookingOptions {
     private float stars;
 
     private int price;
-    private int nights;
+    private int days;
     private int taxes;
     private int totalPrice;
 
@@ -158,12 +158,12 @@ public class BookingOptions {
         this.totalPrice = totalPrice;
     }
 
-    public int getNights() {
-        return nights;
+    public int getDays() {
+        return days;
     }
 
-    public void setNights(int nights) {
-        this.nights = nights;
+    public void setDays(int days) {
+        this.days = days;
     }
 
     public Month getStartOfTripMonth(){

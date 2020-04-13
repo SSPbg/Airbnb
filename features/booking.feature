@@ -21,8 +21,8 @@ Feature: Booking
 
     And he choose the first with "<stars>" stars
 
-    Then John should see the correct sum according entered data
-    And he should see the reservation details in the widget
+    Then he should see the reservation details in the widget
+    And John should see the correct sum according entered data
 
     Examples:
       | place | offset days | days stay | adults | kids | currency | min price | max price | bathrooms | additional              | stars |

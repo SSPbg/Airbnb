@@ -110,6 +110,19 @@ public class ReserveActions
         return price.replace(Symbol, StringUtils.EMPTY);
     }
 
+    public int getDiscount(NumberFormat numberFormat){
+        int cumulatedDiscount=0;
+        for (WebElementFacade priceElement:resevrationPage.discountPrice) {
+            String priceOnTheRow = getPriceStripedFromCurrencySymbol(priceElement.getText(), numberFormat.getCurrency().getSymbol());
+            int priceOnTheRowInt = converToPrice(priceOnTheRow, numberFormat);
+            System.out.println("Discount: "+priceOnTheRow);
+            cumulatedDiscount=cumulatedDiscount+priceOnTheRowInt;
+
+
+            }
+        return  cumulatedDiscount;
+        }
+
     @Step
     public void checkPrice(BookingOptions options) {
 
@@ -149,16 +162,37 @@ public class ReserveActions
         int finalPrice=0;
         int totalPriceDisplayed = 0;
 
-        for (WebElementFacade priceElement:resevrationPage.listPrices) {
-           String priceOnTheRow  = getPriceStripedFromCurrencySymbol(priceElement.getText(),numberFormat.getCurrency().getSymbol());
-           int priceOnTheRowInt =  converToPrice(priceOnTheRow,numberFormat);
+        for (int k=0;k< resevrationPage.listPrices.size();k++) {
+            WebElementFacade priceElement = resevrationPage.listPrices.get(k);
+            String priceOnTheRow = getPriceStripedFromCurrencySymbol(priceElement.getText(), numberFormat.getCurrency().getSymbol());
 
+            int priceOnTheRowInt =  converToPrice(priceOnTheRow,numberFormat);
+           System.out.println(" Current row "+priceOnTheRow);
 
+           if (row == 1) priceForAllDays=priceOnTheRowInt;
+
+           if (row < resevrationPage.listPrices.size()) finalPrice = finalPrice+priceOnTheRowInt;
+
+           if (row == resevrationPage.listPrices.size()) totalPriceDisplayed = priceOnTheRowInt;
+           row++;
         }
-
+        int discount = getDiscount(numberFormat);
+        finalPrice=finalPrice+discount;
         System.out.println("Base price for the days:"+priceForAllDays);
         System.out.println("Final price for the days:"+finalPrice);
         System.out.println("Total price displayed: "+totalPriceDisplayed);
+
+
+        SoftAssertions softly = new SoftAssertions();
+        softly.assertThat( priceForAllDays)
+                .as("Unit price is as expected:")
+                .isEqualTo(options.getDays()*unitPriceDisplayed);
+        softly.assertThat(totalPriceDisplayed)
+                .as("Total price to be as expected:")
+                .isEqualTo(finalPrice);
+        softly.assertAll();
+
+
     }
 
 
