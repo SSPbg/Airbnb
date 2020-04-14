@@ -32,3 +32,6 @@ Feature: Booking
       | Bali  | 5           | 7         | 2      | 1    | EUR      | 50        | 100       | 1         | Air conditioner,Jacuzzi | 5     |
       | Bali  | 5           | 7         | 2      | 1    | EUR      | 50        | 100       | 1         | Air conditioner,Jacuzzi | 5     |
       | Bali  | 5           | 7         | 2      | 1    | EUR      | 50        | 100       | 1         | Air conditioner,Jacuzzi | 5     |
+      | Bali  | 5           | 7         | 2      | 1    | EUR      | 50        | 100       | 1         | Air conditioner,Jacuzzi | 5     |
+      | Bali  | 5           | 7         | 2      | 1    | EUR      | 50        | 100       | 1         | Air conditioner,Jacuzzi | 5     |
+      | Bali  | 5           | 7         | 2      | 1    | EUR      | 50        | 100       | 1         | Air conditioner,Jacuzzi | 5     |

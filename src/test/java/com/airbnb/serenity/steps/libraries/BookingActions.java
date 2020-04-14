@@ -12,14 +12,9 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.math.BigDecimal;
-import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
-import java.text.NumberFormat;
-import java.text.ParseException;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
+
 
 import static com.airbnb.serenity.page_objects.HomePage.*;
 import static com.airbnb.serenity.page_objects.MenuWithFilters.ROOMS_AND_BEDS_MENU_ITEM;
@@ -39,7 +34,6 @@ public class BookingActions
     }
 
     public void startSearchingWithPlace(String place) {
-        //options.getPlace();
         WebDriverWait wait = new WebDriverWait(currentPage.getDriver(), 5000); // 5 seconds timeout
         wait.until(ExpectedConditions.invisibilityOfElementLocated(HomePage.DIALOG));
 
@@ -185,10 +179,11 @@ public class BookingActions
         int i = 0;
         while (nextPageExists) {
             i = 0;
-
+            staysPage.waitFor(ExpectedConditions.visibilityOfAllElementsLocatedBy( LIST_OF_STAYS));
             List<WebElementFacade> Stays = staysPage.listOfStays;
             while (i < Stays.size()) {
-              //  setElementInVisibleScreen(Stays.get(0));
+               //System.out.println("Stays here are: "+Stays.size());
+               //setElementInVisibleScreen(Stays.get(i));
                 WebElementFacade star1 = null;
                 String startText = "1";
 
@@ -197,7 +192,8 @@ public class BookingActions
                         startText = star1.getText();
 
                     } catch (Exception e) {
-                        System.out.println("Stay with number "+i+" has not a star");
+                        int number=i+1;
+                        System.out.println("Stay with number "+number+" has not a star");
                     }
 
                 if (star1 != null) {
@@ -214,7 +210,7 @@ public class BookingActions
             }
             WebElementFacade nextArrow = getWebElementFacadeBy(StaysPage.NEXT_PAGE_ARROW);
             if (nextArrow.isPresent()) {
-
+                System.out.println("Clicking on the next page...");
                 clicksOn(StaysPage.NEXT_PAGE_ARROW);
 
             } else {
@@ -225,17 +221,6 @@ public class BookingActions
         }
     }
 
-    public void checkTheCalendarsDaysWithBlack(BookingOptions options) {
-        int startDayTrip = options.getDayStartTrip();
-        String startTripMonth = formatMonth(options.getStartOfTripMonth());
-        int endDayTrip = options.getDayEndTrip();
-        String endTripMonth = formatMonth(options.getEndOfTripMonth());
-        assertThat(getWebElementFacadeBy(CALENDARS_TIME_PERIOD).getText())
-                .as("The start month has to be listed")
-                .containsIgnoringCase(startTripMonth);
-
-
-    }
 
 
 }
