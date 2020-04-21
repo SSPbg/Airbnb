@@ -14,7 +14,7 @@ extends PageObject {
     @FindBy(className = CLASS_OF_STAY)
     public List<WebElementFacade> listOfStays;
 
-    public static final By STARS_CSS = By.cssSelector("span > span[aria-hidden=true]");
+    public static final By STARS_CSS = By.cssSelector("span > span[aria-hidden=true]");//_10fy1f8
     public static final By STAY_HREF = By.cssSelector("a[href][target^=listing_][data-check-info-section=true]");
     public static final By NEXT_PAGE_ARROW = By.cssSelector("._i66xk8d > a");
 

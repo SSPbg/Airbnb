@@ -155,12 +155,15 @@ public class BookingActions
         while (nextPageExists) {
 
             for (WebElementFacade linkElement : staysPage.listOfStays) {
+
                 if (linkElement.containsElements(STARS_CSS) &&
-                        Double.parseDouble(readsTextFrom(STARS_CSS)) >= stars) {
+                        Double.parseDouble(readsTextFrom((WebElementFacade) linkElement.findBy(STARS_CSS))) >= stars) {
                         goToURL(linkElement.findBy(STAY_HREF).getAttribute("href"));
                         return;
                 }
+
             }
+
             WebElementFacade nextArrow = getWebElementFacadeBy(StaysPage.NEXT_PAGE_ARROW);
             if (nextArrow.isPresent()) {
                 System.out.println("Clicking on the next page...");
