@@ -5,10 +5,8 @@ import java.time.LocalDate;
 import java.time.Month;
 
 public class BookingOptions {
-    private String currency;
+
     private String place;
-    LocalDate startDate;
-    LocalDate endDate;
     private int adults;
     private int kids;
     private BigDecimal minPrice;
@@ -18,13 +16,14 @@ public class BookingOptions {
     private boolean jacuzzi=false;
     private float stars;
     private int days;
+    private int daysFromNow;
 
-    public String getCurrency() {
-        return currency;
+    public int getDaysFromNow() {
+        return daysFromNow;
     }
 
-    public void setCurrency(String currency) {
-        this.currency = currency;
+    public void setDaysFromNow(int daysFromNow) {
+        this.daysFromNow = daysFromNow;
     }
 
 
@@ -38,33 +37,21 @@ public class BookingOptions {
 
 
     public LocalDate getStartDate() {
+        LocalDate today = LocalDate.now();
+        LocalDate startDate =  today.plusDays(this.daysFromNow);
         return startDate;
     }
 
-    public void setStartDate(LocalDate startDate) {
-        this.startDate = startDate;
-    }
 
-    public void setStartDate(Integer daysFromNow){
-        LocalDate today = LocalDate.now();
-        LocalDate startDate =  today.plusDays(daysFromNow);
-        this.startDate = startDate;
-    }
 
     public LocalDate getEndDate() {
-        return endDate;
-    }
 
-    public void setEndDate(LocalDate endDate) {
-        this.endDate = endDate;
-    }
-
-    public void setEndDate(Integer daysFromNow,Integer duration) {
         LocalDate today = LocalDate.now();
-        LocalDate endDate =  today.plusDays(daysFromNow);
-        endDate =  endDate.plusDays(duration);
-        this.endDate = endDate;
+        LocalDate endDate =  today.plusDays(this.daysFromNow);
+        return  endDate.plusDays(this.days);
+
     }
+
 
     public int getAdults() {
         return adults;
@@ -136,6 +123,7 @@ public class BookingOptions {
 
     public void setDays(int days) {
         this.days = days;
+
     }
 
     public Month getStartOfTripMonth(){

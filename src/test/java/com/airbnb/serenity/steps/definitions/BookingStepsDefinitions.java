@@ -1,84 +1,44 @@
 package com.airbnb.serenity.steps.definitions;
 
 import com.airbnb.serenity.entities.BookingOptions;
-import com.airbnb.serenity.page_objects.ReservePage;
 import com.airbnb.serenity.steps.libraries.BookingActions;
 
-import com.airbnb.serenity.steps.libraries.ReserveActions;
-import cucumber.api.java.en.Given;
+import com.airbnb.serenity.steps.libraries.ShowReservationActions;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import net.thucydides.core.annotations.Steps;
-import org.assertj.core.api.SoftAssertions;
 
-import static com.airbnb.serenity.page_objects.HomePage.*;
 
 import java.util.List;
 import java.util.Map;
 
-import static com.airbnb.serenity.page_objects.ReservePage.*;
 import static com.airbnb.serenity.utils.SetBookingOptionsByList.prepareBookingOptionsObject;
 
 
 public class BookingStepsDefinitions {
 
-    private double pricePerNight;
+
     private BookingOptions bookingOptions;
     @Steps
     BookingActions dimo;
 
     @Steps
-    private ReserveActions anni;
-
-    @Steps
-    private ReservePage reservePage;
+    private ShowReservationActions anni;
 
 
-    @Given("^(?:.*) is on the popular vacation booking site$")
-    public void johnIsOnTheHomePage() {
-        dimo.openPage();
-    }
-
-    @Given("^s?he select currency \"([^\"]*)\"$")
-    public void heSelectCurrencyEuro(String currency) {
-        bookingOptions = new BookingOptions();
-        bookingOptions.setCurrency(currency);
-        dimo.clicksOn(LANGUAGE_AND_CURRENCY_BUTTON);
-        // dimo.clicksOn(LANGUAGE_AND_CURRENCY_BUTTON_2);
-        dimo.clicksOn(CURRENCY_TABLE_LINK);
-        dimo.setCurrency(currency);
-    }
-
-
-    @When("^(?:.*) search for a place where to stay in \"([^\"]*)\"$")
-    public void heSearchForAPlaceWhereToStayIn(String place) {
-
-        bookingOptions.setPlace(place);
-
+    @When("^John searches for a place where to stay with the following options:$")
+    public void johnSearchForAPlaceWhereToStayWithTheFollowingOptions(List<BookingOptions> data) {
+        bookingOptions =data.get(0);
         dimo.startSearchingWithPlace(bookingOptions.getPlace());
-    }
-
-    @When("^s?he searching for vacation \"([^\"]*)\"-days trip after \"([^\"]*)\" days$")
-    public void heSearchingForVacationDaysTripAfterDays(Integer howLong, Integer daysFromNow) {
-        bookingOptions.setStartDate(daysFromNow);
-        bookingOptions.setEndDate(daysFromNow, howLong);
-        bookingOptions.setDays(howLong);
         dimo.applyDate(bookingOptions.getStartDate());
         dimo.applyDate(bookingOptions.getEndDate());
-    }
-
-
-    @When("^s?he search for number of people to accompany him:$")
-    public void heSearchForNumberOfPeopleToAccompanyHim(List<BookingOptions> guests) { //List<Map<String,Integer>>
-        bookingOptions.setKids(guests.get(0).getKids());
-        bookingOptions.setAdults(guests.get(0).getAdults());
-
         dimo.selectAdditionalGuests(bookingOptions);
 
 
     }
 
-    @When("^(?:.*) has a requirements for his room:$")
+
+    @When("^(?:.*) has additional requirements for his room:$")
     public void userHasARequirementsForHisRoom(List<Map<String, String>> requirements) {
         prepareBookingOptionsObject(bookingOptions, requirements);
         dimo.setPriceRange(bookingOptions.getMinPrice(), bookingOptions.getMaxPrice());
@@ -88,24 +48,18 @@ public class BookingStepsDefinitions {
 
     }
 
-    @When("^s?he choose the first with \"([^\"]*)\" stars$")
+    @When("^s?he choose the first with at least (\\d+\\.?\\d*) stars$")
     public void heChooseTheFirstWithStars(Float stars) throws InterruptedException {
         dimo.selectTheFirstStayWithAtLeastGivenStar(stars);
 
     }
 
-
-    @Then("^he should see the reservation details in the widget$")
+    @Then("^s?he should see his reservation details$")
     public void heShouldSeeTheReservationDetailsInTheWidget() {
-        //dimo.checkTheCalendarsDaysWithBlack(bookingOptions);
-
         anni.checkDates(bookingOptions);
         anni.checkGuests(bookingOptions);
-    }
-
-
-    @Then("^(?:.*) should see the correct sum according entered data$")
-    public void userShouldSeeTheCorrectSumAccordingEnteredData() {
         anni.checkPrice(bookingOptions);
     }
+
+
 }

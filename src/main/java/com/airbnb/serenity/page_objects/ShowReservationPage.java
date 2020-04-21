@@ -13,7 +13,7 @@ import org.openqa.selenium.support.FindBys;
 import javax.accessibility.AccessibleStateSet;
 import java.util.List;
 
-public class ReservePage extends PageObject {
+public class ShowReservationPage extends PageObject {
 
     public static final By START_OF_TRIP_DATE = By.xpath("//div[@class='_1yy0mt98'] | //div[@class='_ykxqsm']");
 

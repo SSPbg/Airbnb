@@ -23,14 +23,11 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-import static com.airbnb.serenity.page_objects.StaysPage.NEXT_PAGE_ARROW;
+
 
 public class BaseActions {
     protected BasePage currentPage;
 
-    public void navigateToURL() {
-        currentPage.open();
-    }
 
     @Step("Enters '{1}' in field {0}")
     protected void fillsFieldWithData(WebElementFacade fieldElement,
@@ -192,10 +189,6 @@ public class BaseActions {
         return  child.find(locatorParent);
     }
 
-    public Float parseStringToFloat(String str) {
-        return Float.valueOf(str);
-    }
-
     public String formatMonth(Month mon) {
         return mon.getDisplayName(TextStyle.FULL, Locale.ENGLISH);
     }
@@ -213,36 +206,18 @@ public class BaseActions {
         return  currentPage.find(locator);
     }
 
-    @Step("")
-    public int readsNumericValueFrom(By locator) {
-        String numericText = currentPage.find(locator).getValue();
-        return Integer.parseInt(numericText);
-    }
 
-    public LocalDate convertStringToDate(String format, String dateInString){
+    public LocalDate stringToDate(String format, String dateInString){
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(format);
 
 
             LocalDate  date = LocalDate.parse(dateInString,formatter);
             System.out.println(date);
             return date;
-          //  System.out.println("time zone : " + TimeZone.getDefault().getID());
-          //  System.out.println(formatter.format(date));
-
-
 
     }
 
-    public static int converToPrice(String displayedPrice, NumberFormat numberFormat){
-        Number num = 0;
-        try {
-            num = numberFormat.parse(displayedPrice);
-        } catch (ParseException e) {
-            e.printStackTrace();
-            throw new RuntimeException("Can't convert " + displayedPrice + " to Double!");
-        }
-       // System.out.println(num);
 
-        return num.intValue();
-    }
+
+
 }

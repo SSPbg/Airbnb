@@ -13,13 +13,12 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.List;
+
 
 
 import static com.airbnb.serenity.page_objects.HomePage.*;
 import static com.airbnb.serenity.page_objects.MenuWithFilters.ROOMS_AND_BEDS_MENU_ITEM;
 import static com.airbnb.serenity.page_objects.StaysPage.*;
-import static org.assertj.core.api.Assertions.assertThat;
 
 
 public class BookingActions
@@ -29,9 +28,7 @@ public class BookingActions
     private StaysPage staysPage;
 
 
-    public void openPage() {
-        homePage.open();
-    }
+
 
     public void startSearchingWithPlace(String place) {
         WebDriverWait wait = new WebDriverWait(currentPage.getDriver(), 5000); // 5 seconds timeout
@@ -139,74 +136,30 @@ public class BookingActions
         }
         clicksOn(menuWithFilters.showMoreThanThreeThousandPlacesButton);
 
-    }
-/*
-    public By returnStarsByStayNumberInPage(int number) {
-        int nthElement = number + 1;
-        By StarsBy = By.cssSelector("." + StaysPage.CLASS_OF_STAY + ":nth-of-type(" + String.valueOf(nthElement) + ") " + StaysPage.STARS_CSS);
-        return StarsBy;
+        WebDriverWait wait = new WebDriverWait(currentPage.getDriver(), 5000); // 5 seconds timeout
+        wait.until(ExpectedConditions.invisibilityOfElementLocated(HomePage.DIALOG));
+
+
     }
 
-    public By returnLinkOFStayByStayNumberInPage(int number) {
-        int nthElement = number + 1;
-        By linkBy = By.cssSelector("." + StaysPage.CLASS_OF_STAY + ":nth-of-type(" + String.valueOf(nthElement) + ") a");
-        return linkBy;
-    }
-
-    public By returnStayByStayNumberInPage(int number) {
-        int nthElement = number + 1;
-        By linkBy = By.cssSelector("." + StaysPage.CLASS_OF_STAY + ":nth-of-type(" + String.valueOf(nthElement) + ")");
-        return linkBy;
-    }
-
-    public By prepareByForGivenStars(String stars) {
-        String byLocatorString = STAR_WITH_VALUE.replace("star_value", stars);
-        By starsBy = By.xpath(byLocatorString);
-        return starsBy;
-    }
-*/
     @Step("The Stay with {0} Stars or above not found with this search criteria")
     public void elementNotFound(float stars) {
         System.out.println("The element with stars >= " + String.valueOf(stars) + " not found");
     }
 
+
     @Step
     public void selectTheFirstStayWithAtLeastGivenStar(Float stars) throws InterruptedException {
-        WebDriverWait wait = new WebDriverWait(currentPage.getDriver(), 5000); // 5 seconds timeout
-        wait.until(ExpectedConditions.invisibilityOfElementLocated(HomePage.DIALOG));
 
         boolean nextPageExists = true;
-        int i = 0;
         while (nextPageExists) {
-            i = 0;
-            staysPage.waitFor(ExpectedConditions.visibilityOfAllElementsLocatedBy( LIST_OF_STAYS));
-            List<WebElementFacade> Stays = staysPage.listOfStays;
-            while (i < Stays.size()) {
-               //System.out.println("Stays here are: "+Stays.size());
-               //setElementInVisibleScreen(Stays.get(i));
-                WebElementFacade star1 = null;
-                String startText = "1";
 
-                    try {
-                        star1 = (WebElementFacade) Stays.get(i).findBy(By.xpath(STARS_XPATH));///By.xpath(".//span[@class='_3zgr580']"));
-                        startText = star1.getText();
-
-                    } catch (Exception e) {
-                        int number=i+1;
-                        System.out.println("Stay with number "+number+" has not a star");
-                    }
-
-                if (star1 != null) {
-                    float starValue = Float.parseFloat(startText);
-                    System.out.println("Star value " + starValue);
-                    if (starValue >= stars) {
-                        WebElementFacade link = Stays.get(i);//getWebElementFacadeBy(returnLinkOFStayByStayNumberInPage(i));
-                        System.out.println(link.getAttribute("href"));
-                        goToURL(link.getAttribute("href"));
+            for (WebElementFacade linkElement : staysPage.listOfStays) {
+                if (linkElement.containsElements(STARS_CSS) &&
+                        Double.parseDouble(readsTextFrom(STARS_CSS)) >= stars) {
+                        goToURL(linkElement.findBy(STAY_HREF).getAttribute("href"));
                         return;
-                    }
                 }
-                i++;
             }
             WebElementFacade nextArrow = getWebElementFacadeBy(StaysPage.NEXT_PAGE_ARROW);
             if (nextArrow.isPresent()) {
